@@ -2,6 +2,19 @@
 This is a collection of useful code snippets for different classes.
 # Useful code snippets
 ## Getting Data
+### Getting data from a website
+```
+import requests
+
+url = 'https://www.worldometers.info/coronavirus/'
+response = requests.get(url)
+
+# Create a BeautifulSoup object
+soup = BeautifulSoup(response.text, "html.parser")
+
+# Print the BeautifulSoup object
+print(soup)
+```
 ### Getting financial data
 ```
 import pandas as pd
@@ -27,6 +40,33 @@ all_articles = newsapi.get_everything(q='Elon Musk',
                                       language='en',
                                       sort_by='relevancy',
                                       page=2)
+```
+### getting twitter data
+```
+import tweepy
+import time
+
+#Twitter API credentials
+consumer_key = "YOUR CONSUMER KEY"
+consumer_secret = "YOUR CONSUMER SECRET"
+access_key = "YOUR ACCESS KEY"
+access_secret = "YOUR ACCESS SECRET"
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_key, access_secret)
+api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+
+tweets = []
+
+#Define a for-loop to create a list of tweets
+for tweet in tweepy.Cursor(api.search, q='Elon Musk', since='2020-08-04', until='2020-08-05', lang='en').items():
+    tweets.append(tweet)
+
+#Define a pandas DataFrame to store the date:
+data = pd.DataFrame(data=[tweet.text for tweet in tweets], columns=['Tweets'])
+
+#Display the first 10 elements of the dataframe:
+display(data.head(10))
 ```
 
 ## Plotting
@@ -79,4 +119,111 @@ p.xaxis.formatter=DatetimeTickFormatter(
     )
 show(p)
 ```
+## Data Cleaning
+### Removing punctuation
+```
+import re
 
+text = "This &is [an] example? {of} string. with.? punctuation!!!!" # Sample string
+
+# Remove punctuation
+text = ''.join([c for c in text if c not in string.punctuation])
+```
+
+### Tokenization
+```
+import nltk
+
+nltk.download('punkt')
+
+text = "This is an example of nltk tokenization."
+
+# Tokenize the text
+words = nltk.word_tokenize(text)
+```
+
+### Removing stopwords
+```
+import nltk
+
+nltk.download('stopwords')
+
+text = "This is an example of nltk stopwords."
+
+# Tokenize the text
+words = nltk.word_tokenize(text)
+
+# Remove stopwords
+words = [word for word in words if word not in stopwords.words('english')]
+```
+
+### Stemming
+```
+import nltk
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+from nltk.stem import PorterStemmer
+
+text = "This is an example of nltk stemming."
+
+# Tokenize the text
+words = nltk.word_tokenize(text)
+
+# Stem the words
+ps = PorterStemmer()
+words = [ps.stem(word) for word in words]
+```
+
+### Lemmatization
+```
+import nltk
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+from nltk.stem import WordNetLemmatizer
+
+text = "This is an example of nltk lemmatization."
+
+# Tokenize the text
+words = nltk.word_tokenize(text)
+
+# Stem the words
+lemmatizer = WordNetLemmatizer()
+words = [lemmatizer.lemmatize(word) for word in words]
+```
+
+## Feature Engineering
+### Bag of Words
+```
+from sklearn.feature_extraction.text import CountVectorizer
+
+text = ["This is an example of bag of words."]
+
+# Create the bag of words
+vectorizer = CountVectorizer()
+vectorizer.fit(text)
+bag_of_words = vectorizer.transform(text)
+
+# Print the bag of words
+print(bag_of_words)
+```
+
+### TF-IDF
+```
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+text = ["This is an example of tf-idf."]
+
+# Create the tf-idf
+vectorizer = TfidfVectorizer()
+vectorizer.fit(text)
+tfidf = vectorizer.transform(text)
+
+# Print the tf-idf
+print(tfidf)
+```
