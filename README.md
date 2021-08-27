@@ -226,3 +226,54 @@ tfidf = vectorizer.transform(text)
 # Print the tf-idf
 print(tfidf)
 ```
+## Web scraping
+### Scraping a webpage
+```
+import scrapy
+
+class BrickSetSpider(scrapy.Spider):
+    name = "brickset_spider"
+    start_urls = ['http://brickset.com/sets/year-2016']
+
+    def parse(self, response):
+        SET_SELECTOR = '.set'
+        for brickset in response.css(SET_SELECTOR):
+            NAME_SELECTOR = 'h1 ::text'
+            yield {
+                'name': brickset.css(NAME_SELECTOR).extract_first(),
+            }
+```
+
+
+### Scraping a PDF
+```
+from io import BytesIO
+from urllib.request import urlopen
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
+from pdfminer.pdfpage import PDFPage
+
+def convert_pdf_to_txt(path):
+    rsrcmgr = PDFResourceManager()
+    retstr = BytesIO()
+    codec = 'utf-8'
+    laparams = LAParams()
+    device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+    fp = urlopen(path)
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
+    password = ""
+    maxpages = 0
+    caching = True
+    pagenos=set()
+
+    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password, caching=caching, check_extractable=True):
+        interpreter.process_page(page)
+
+    text = retstr.getvalue()
+
+    fp.close()
+    device.close()
+    retstr.close()
+    return text
+```
