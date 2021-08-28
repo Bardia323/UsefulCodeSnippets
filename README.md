@@ -292,3 +292,43 @@ def convert_pdf_to_txt(path):
     retstr.close()
     return text
 ```
+## Neural networks
+### Creating a neural network
+```
+import tensorflow as tf
+
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(512, activation=tf.nn.relu),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(10, activation=tf.nn.softmax)
+])
+
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+```
+
+### Training a neural network
+```
+model.fit(x_train, y_train, epochs=5)
+
+model.evaluate(x_test, y_test)
+```
+
+### Predicting with a neural network
+```
+predictions = model.predict(x_test)
+```
+
+### Creating a CNN
+```
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(32, (3,3), padding='same', activation=tf.nn.relu, input_shape=(28, 28, 1)),
+    tf.keras.layers.MaxPooling2D((2, 2), strides=2),
+    tf.keras.layers.Conv2D(64, (3,3), padding='same', activation=tf.nn.relu),
+    tf.keras.layers.MaxPooling2D((2, 2), strides=2),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(128, activation=tf.nn.relu),
+    tf.keras.layers.Dense(10,  activation=tf.nn.softmax)
+])
