@@ -119,6 +119,7 @@ p.xaxis.formatter=DatetimeTickFormatter(
 show(p)
 ```
 ## Data Cleaning
+###
 ### Removing punctuation
 ```
 import re
@@ -259,8 +260,16 @@ class BlogSpider(scrapy.Spider):
             yield response.follow(next_page, self.parse)
 ```
 
+### Scraping a PDF (The Easy Way)
+```
+from tika import parser 
 
-### Scraping a PDF
+raw = parser.from_file('introductory-statistics-23.31.pdf')
+text = raw['content']
+print(text)
+``` 
+
+### Scraping a PDF (The Hard Way)
 ```
 from io import BytesIO
 from urllib.request import urlopen
