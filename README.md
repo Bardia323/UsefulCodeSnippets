@@ -68,6 +68,54 @@ data = pd.DataFrame(data=[tweet.text for tweet in tweets], columns=['Tweets'])
 display(data.head(10))
 ```
 
+### Getting Corporate data with OpenCorporates
+```
+from opencorporates import OpenCorporates
+oc = OpenCorporates(your_api_key)
+data = oc.companies.get_by_name('Walmart', country_code='us')
+
+
+# data is a dictionary with the following keys:
+# ['company', 'inactive', 'fuzzy_match', 'incorporation_date', 
+#  'name_formated', 'company_number', 'jurisdiction_code', 'company_type']
+```
+
+### Getting corporate data with SEC EDGAR
+```
+from edgar import Edgar
+edgar = Edgar()
+results = edgar.find_company_name('Tesla')
+```
+
+### Getting currency exchange data with open exchange rates
+```
+import openexchangerates
+
+openexchangerates.get_rates('USD')
+```
+
+### Getting import/export data with UN COMTRADE
+```
+from comtrade import ComTrade
+ct = ComTrade(
+    your_api_key,
+    classification="HS",
+    frequency="A",
+    period="2019",
+    reporter="usa",
+    partner="all",
+    tradeflow="all",
+    )
+ct.get_requests_left()
+
+ct.get_commodity_codes()
+
+ct.get_data()
+
+# data is a pandas dataframe with the following columns:
+# ['period', 'trade_flow', 'reporter', 'partner', 'commodity', 'trade_value_usd']
+```
+
 ## Plotting
 ### Plotting with matplotlib
 ```
