@@ -115,6 +115,36 @@ ct.get_data()
 # data is a pandas dataframe with the following columns:
 # ['period', 'trade_flow', 'reporter', 'partner', 'commodity', 'trade_value_usd']
 ```
+### Getting US COVID data
+```
+import requests
+import json
+
+url = 'https://covidtracking.com/api/states/daily'
+
+r = requests.get(url)
+data = json.loads(r.text)
+
+# data is a list of dictionaries with the following keys:
+# ['state', 'date', 'positive', 'negative', 'pending', 'hospitalized', 
+#  'death', 'total', 'totalTestResults', 'fips', 'deathIncrease', 
+#  'hospitalizedIncrease', 'negativeIncrease', 'positiveIncrease', 
+#  'totalTestResultsIncrease']
+```
+### Getting Canada COVID Data
+```
+import requests
+import json
+
+url = 'https://health-infobase.canada.ca/src/data/covidLive/covid19.csv'
+
+r = requests.get(url)
+data = r.text.split('\n')
+
+# data is a list of strings with the following keys:
+# ['prname', 'date', 'numconf', 'numtotal', 'numtoday', 'numdeaths', 
+#  'numtested', 'numrecover', 'percentrecover', 'ratetested']
+```
 
 ## Plotting
 ### Plotting with matplotlib
