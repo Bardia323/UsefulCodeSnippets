@@ -145,6 +145,21 @@ data = r.text.split('\n')
 # ['prname', 'date', 'numconf', 'numtotal', 'numtoday', 'numdeaths', 
 #  'numtested', 'numrecover', 'percentrecover', 'ratetested']
 ```
+### Get World Covid Data
+```
+import requests
+import json
+from datetime import datetime
+
+
+url = 'https://opendata.ecdc.europa.eu/covid19/casedistribution/json/'
+
+r = requests.get(url)
+data = json.loads(r.text)
+
+# data is a dictionary with the following keys:
+# ['cases', 'deaths', 'countriesAndTerritories', 'countryterritoryCode']
+```
 
 ## Plotting
 ### Plotting with matplotlib
